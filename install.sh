@@ -2,10 +2,15 @@
 
 apt-get update
 apt-get -y install vim gcc linux-headers-generic
-pushd /tmp
-tar xzvf "`find /media/|grep VMwareTools|grep tar.gz`"
 
-/tmp/vmware-tools-contrib/vmware-install.pl
+VMTOOLS=`find /media/|grep VMwareTools|grep tar.gz`
+if [ "$VMTOOLS" != "" ]
+then
+  pushd /tmp
+  tar xzvf "$VMTOOLS"
+  /tmp/vmware-tools-contrib/vmware-install.pl
+  popd
+fi
 
 add-apt-repository -y ppa:mercurial-ppa/releases
 add-apt-repository -y ppa:tortoisehg-ppa/releases
@@ -17,5 +22,5 @@ echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/source
 apt-get update 
 apt-get -y install google-chrome-unstable
 
-
-popd
+apt-get update
+apt-get -u -y dist-upgrade
